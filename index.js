@@ -77,7 +77,7 @@ app.delete(`/delete-file/:id`, async function (req, res) {
 
 })
 
-app.use('/downloads', express.static('file_database'))
+app.use('/downloads', express.static('uploads'))
 
 // (async () => {
 //     await sequelize.authenticate();
