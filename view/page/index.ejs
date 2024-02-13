@@ -11,17 +11,9 @@
     <%- include('../partials/header') %>
   </header>
   <main>
-    <div class="jumbotron">
-      <div class="content" style="display: flex; align-items: center; gap: 10px;">
-        <form action="/upload" method="post" enctype="multipart/form-data">
-          <input type="file" name="file" style="cursor: pointer;">
-          <button type="submit" style="background-color: rgb(70, 112, 167); border-radius: 5px; border: 0px; color: aliceblue; padding-left: 5px; padding-right: 5px; font-size: 15px;">
-            <span>Upload</span>
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-          </button>
-        </form>
-      </div>
-    </div>
+    <%- include('../page/upload-file') %>
+    <%- include('../page/upload-text') %>
+
     <div class="list-data">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">File</a>
@@ -42,22 +34,56 @@
         </ul>
       </div>
     </div>
+
   </main>
   <footer>
     <%- include('../partials/footer') %>
   </footer>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById("upload-file").style.display = "block";
+      document.getElementById("upload-text").style.display = "none";
+    });
+
+    function showUploadFile() {
+      document.getElementById("upload-file").style.display = "block";
+      document.getElementById("upload-text").style.display = "none";
+    }
+
+    function showUploadText() {
+      document.getElementById("upload-file").style.display = "none";
+      document.getElementById("upload-text").style.display = "block";
+    }
+
     async function confirmDelete(id) {
       if (confirm("Are you sure you want to delete this file?")) {
         await fetch(`/delete-file/${id}`, {
           method: 'DELETE'
         }).then(() => {
-            window.location.reload()
+          window.location.reload()
         }).catch((err) => {
           alert(err)
         })
       }
+    }
+
+    async function sendText() {
+      const textValue = document.getElementById("text-area")
+      await fetch(`/write-txt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: textValue.value
+        })
+      }).then(() => {
+        textValue.value = null
+        window.location.reload()
+      }).catch((err) => {
+        alert(err)
+      })
     }
   </script>
 </body>
