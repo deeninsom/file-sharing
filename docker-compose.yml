@@ -16,12 +16,7 @@ services:
     build:
       dockerfile: Dockerfile
     environment:
-      MYSQL_DATABASE: db_file_shared
-      MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 123123
-      MYSQL_HOST: 192.168.60.48
-      MYSQL_PORT: 3307
-      PORT: 8081
+      - .env
     volumes:
       - ./:/nodejs_hello
     ports:
