@@ -8,7 +8,8 @@ const db = require("./models");
 const PORT = process.env.PORT || 8081;
 const LOCAL_IP = process.env.LOCAL_IP || '127.0.0.1';
 const fs = require('fs')
-
+const natural = require('natural');
+const tokenizer = new natural.WordTokenizer();
 
 // ----- start multer ----------
 const multer = require('multer');
@@ -63,7 +64,7 @@ app.delete(`/delete-file/:id`, async function (req, res) {
     const filePath = path.join(__dirname, findFile.path);
     fs.unlinkSync(filePath);
 
-    if(!filePath){
+    if (!filePath) {
         return res.status(404).json({ error: 'File not found on directory' });
     }
 
@@ -78,6 +79,21 @@ app.delete(`/delete-file/:id`, async function (req, res) {
 })
 
 app.use('/downloads', express.static('uploads'))
+
+app.post('/write-txt', async function (req, res) {
+    const { text } = req.body
+    const word = tokenizer.tokenize(text)
+    const fileName = `${word.length > 0 ? word[0] : 'file'}.txt`
+    const filePath = path.join(__dirname, 'uploads', `${word.length > 0 ? word[0] : 'file'}.txt`);
+    fs.writeFileSync(filePath, text)
+
+    await db.files.create({
+        origin_name: fileName,
+        path: `uploads/${fileName}`
+    })
+
+    res.redirect('/');
+})
 
 // (async () => {
 //     await sequelize.authenticate();
