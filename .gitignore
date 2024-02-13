@@ -1,4 +1,4 @@
 node_modules
 package-lock.json
-file_database
+uploads
 .env
