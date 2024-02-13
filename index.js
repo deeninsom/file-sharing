@@ -6,7 +6,7 @@ const path = require('path');
 const { sequelize } = require("./models");
 const db = require("./models");
 const PORT = process.env.PORT || 8081;
-const LOCAL_IP = '192.168.60.48' || '127.0.0.1';
+const LOCAL_IP = process.env.LOCAL_IP || '127.0.0.1';
 const fs = require('fs')
 
 
