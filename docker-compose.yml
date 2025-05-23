@@ -20,7 +20,7 @@ services:
     volumes:
       - ./:/nodejs_hello
     ports:
-      - "8081:8081"
+      - "8089:8089"
     depends_on:
       - db
 
